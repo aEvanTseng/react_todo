@@ -71,24 +71,27 @@ export default function TodoList() {
     [todoList]
   )
 
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const newInput = e.target.value
     setInput(newInput)
-  }
+  }, [])
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     if (input !== '') {
       const newId = todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1
       const nowDate = new Date()
 
-      todoList.push({
-        id: newId,
-        memo: input,
-        createdAt: nowDate.toLocaleDateString(),
-      })
+      setTodoList([
+        ...todoList,
+        {
+          id: newId,
+          memo: input,
+          createdAt: nowDate.toLocaleDateString(),
+        },
+      ])
       setInput('')
     }
-  }
+  }, [input, todoList])
 
   return (
     <StyledBox>
